@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Selector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #111;
+      color: white;
+    }
+    select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+    video {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <label for="videoSelect">Choose a video: </label>
+    <select id="videoSelect">
+      <option value="">-- Select an option --</option>
+    </select>
+  </div>
+
+  <video id="fullscreenVideo" autoplay></video>
+
+  <script>
+    const videoOptions = [
+      ["Iphone 13", "iPhone 13 demo loop.mp4"],
+      ["Option 2", "file2.mp4"]
+    ];
+
+    const select = document.getElementById("videoSelect");
+    const video = document.getElementById("fullscreenVideo");
+
+    videoOptions.forEach(([label, file]) => {
+      const opt = document.createElement("option");
+      opt.value = file;
+      opt.textContent = label;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener("change", () => {
+      const file = select.value;
+      if (file) {
+        video.src = file;
+        video.style.display = "block";
+        video.requestFullscreen();
+        video.play();
+      }
+    });
+
+    video.addEventListener("contextmenu", e => e.preventDefault());
+    video.controls = false;
+    video.addEventListener("pause", () => video.play());
+  </script>
+</body>
+</html>
